@@ -70,7 +70,8 @@ export default function App() {
       const notes = mapPaletteToNotes(clusters);
       const wavBase64 = synthesizeWavBase64(notes, 44100);
       const uri = await saveWavToCache(wavBase64);
-      await playSound(uri);
+      const newSound = await playSound(uri, soundRef.current);
+      soundRef.current = newSound;
       setAudioUri(uri);
     } catch (err: any) {
       setErrorMessage(err?.message ?? 'Beklenmeyen bir hata oluştu.');
@@ -94,7 +95,8 @@ export default function App() {
 
   const playExisting = useCallback(async () => {
     if (!audioUri) return;
-    await playSound(audioUri);
+    const newSound = await playSound(audioUri, soundRef.current);
+    soundRef.current = newSound;
   }, [audioUri]);
 
   return (
@@ -426,16 +428,17 @@ async function saveWavToCache(base64Wav: string): Promise<string> {
   return uri;
 }
 
-async function playSound(uri: string) {
-  // Stop any currently playing sound
+async function playSound(uri: string, previous?: Audio.Sound | null): Promise<Audio.Sound> {
   try {
-    // @ts-ignore access from component through closure not available here
+    if (previous) {
+      try { await previous.stopAsync(); } catch {}
+      try { await previous.unloadAsync(); } catch {}
+    }
   } catch {}
   const sound = new Audio.Sound();
   await sound.loadAsync({ uri });
   await sound.playAsync();
-  // Store globally on the component via ref
-  // This is a bit hacky here; in the component we keep a ref. We'll no-op here.
+  return sound;
 }
 
 const styles = StyleSheet.create({
