@@ -1,0 +1,14 @@
+{
+  "name": "dreamviz-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev:server": "pnpm --filter @dreamviz/server dev",
+    "dev:mobile": "pnpm --filter @dreamviz/mobile start",
+    "install:all": "pnpm install"
+  },
+  "devDependencies": {
+    "babel-preset-expo": "^11.0.7"
+  }
+}

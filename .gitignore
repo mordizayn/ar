@@ -1,0 +1,30 @@
+# Node
+node_modules/
+**/node_modules/
+.pnp*
+
+# Builds
+build/
+dist/
+**/build/
+**/dist/
+web-build/
+
+# Expo
+.expo/
+.expo-shared/
+
+# Env
+.env
+apps/*/.env
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor
+.DS_Store
+.idea/
+.vscode/
